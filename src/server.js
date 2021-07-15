@@ -1,6 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import listEndpoints from 'express-list-endpoints'
+import passport from 'passport'
+import oauth from './auth/oauth.js' // if I want to import this module needs to have at least an export default
 
 import usersRoutes from './services/users/index.js'
 import { unAuthorizedHandler, forbiddenHandler, catchAllHandler} from './errorHandlers.js'
@@ -11,6 +13,7 @@ const port = process.env.PORT || 3001
 // ******************* MIDDLEWARES *********************
 
 server.use(express.json())
+server.use(passport.initialize())
 
 // ******************** ROUTES ***********************
 

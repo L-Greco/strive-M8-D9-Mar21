@@ -1,5 +1,6 @@
 import express from "express"
 import createError from "http-errors"
+import passport from 'passport'
 
 import UserModel from "./schema.js"
 import { JWTAuthMiddleware } from "../../auth/middlewares.js"
@@ -90,6 +91,19 @@ usersRouter.post("/refreshToken", async (req, res, next) => {
     // 2. Send back tokens as response
 
     res.send({ newAccessToken, newRefreshToken })
+  } catch (error) {
+    next(error)
+  }
+})
+
+// GOOGLE LOGIN STUFF
+
+usersRouter.get("/googleLogin", passport.authenticate("google", {scope: ["profile", "email"]})) // This endpoint redirects automagically to Google
+
+usersRouter.get("/googleRedirect", passport.authenticate("google"), async(req,res,next) => {
+  try {
+    console.log(req.user)
+    res.send("OK")
   } catch (error) {
     next(error)
   }
